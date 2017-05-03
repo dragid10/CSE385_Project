@@ -2,8 +2,11 @@ public class Main {
 
     public static void main(String[] args) {
 
-//        Connect to AWS Database using the Username and Password provided
-        SQLServer.connectToDB();
+//        Gets the singleton instance to use || equivalent to --> SQLServer sqlserver = new SQLServer()
+        SQLServer sqlServer = SQLServer.getInstance();
+
+//        Connect to Casino Database. REQUIRED FIRST to perform any other function
+        sqlServer.connectToDB();
 
     }
 }
