@@ -17,12 +17,17 @@ public class SQLServer {
     private static SQLServer sqlServer = new SQLServer();
     private String loginUsername, loginPassword;
     private HashMap<String, String> userList;
+    public static Connection conn = null;
+
+
 
     // ========================================= Constructors
     private SQLServer() {
+//        Instantiates Hashmap of Users, and fills it with test users
         userList = new HashMap<>();
         userList.put("admin", "dora");
         userList.put("user", "boots");
+//        connectToDB();
     }
 
     private SQLServer(String loginUsername, String loginPassword) {
@@ -47,6 +52,7 @@ public class SQLServer {
 
     public void setLoginPassword(String loginPassword) {
         this.loginPassword = loginPassword;
+
     }
 
     // ========================================= Member Methods
@@ -70,13 +76,13 @@ public class SQLServer {
             bReader.close();
 
 //            Forms the Connection URL to the database
-            dbConnectionURL = String.format("jdbc:sqlserver://mydatabase.ctidpczh1sap.us-east-2.rds.amazonaws.com:1433" +
+            dbConnectionURL = String.format("jdbc:sqlserver://mydatabase.ctidpczh1sap.us-east-2.rds.amazonaws.com:1433;" +
                     "databaseName=Casino;user=%s;password=%s;", dbUsername, dbPassword);
 
 //            Makes the Actual Connection to the database
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-            Connection connection = DriverManager.getConnection(dbConnectionURL);
-            if (connection != null) {
+            conn = DriverManager.getConnection(dbConnectionURL);
+            if (conn != null) {
                 System.out.println("Successfully Connected to Casino DB!");
             }
 
