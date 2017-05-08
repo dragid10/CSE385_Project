@@ -1,3 +1,8 @@
+import java.sql.CallableStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.util.ArrayList;
+
 /**
  * Name: Alex Oladele
  * Date: 5/6/17
@@ -7,28 +12,70 @@ public class Purchase {
     private int purchaseID;
     private String purchaseDate;
     private boolean isFree, isDeleted;
+    private static Purchase purchase = new Purchase();
+    private String sqlQuery;
+    private CallableStatement callableStatement;
+    private Statement statement;
 
 
-    public float getCustomerSpendingByID(int playerID) {
-        float totalSpending = 0;
-
-        return totalSpending;
+    private Purchase() {
     }
 
-    public String getLastPurchaseFromStore() {
-        //TODO FIX THIS
-        return "";
+    public ArrayList<String> getLastPurchaseFromStore() {
+        ArrayList<String> returnResult = new ArrayList<>();
+        try {
+            ResultSet rs;
+            statement = SQLServer.conn.createStatement();
+                sqlQuery = "{call spGetLastPurchaseFromStore}";
+                rs = statement.executeQuery(sqlQuery);
+                while (rs.next()) {
+                    returnResult.add(rs.getString("Customer"));
+                    returnResult.add(rs.getString("ItemName"));
+                    returnResult.add(rs.getString("ItemPrice"));
+                    returnResult.add(rs.getString("PurchaseDate"));
+                }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return returnResult;
     }
 
-    public String getLastPurchaseFromStore(int playerID) {
+    public ArrayList<String> getLastPurchaseFromStore(int playerID) {
+        ArrayList<String> returnResult = new ArrayList<>();
+        boolean isDeleted = false;
 
-        //TODO FIX THIS
-        return "";
+        try {
+            ResultSet rs;
+            statement = SQLServer.conn.createStatement();
+
+            //            Executes the getHighestWinBySlot SP
+            sqlQuery = String.format("SELECT * FROM tblPurchases WHERE PurchaseID = %d", playerID);
+            rs = statement.executeQuery(sqlQuery);
+
+            while (rs.next()) {
+                isDeleted = rs.getBoolean("Deleted");
+            }
+
+            if (isDeleted) {
+                System.out.println("The PurchaseID provided does not exist - No Data Fetched");
+                return new ArrayList<>();
+            } else {
+                sqlQuery = String.format("{call spGetLastPurchaseFromStoreByID (%d)}", playerID);
+                rs = statement.executeQuery(sqlQuery);
+                while (rs.next()) {
+                    returnResult.add(rs.getString("Customer"));
+                    returnResult.add(rs.getString("ItemName"));
+                    returnResult.add(rs.getString("ItemPrice"));
+                    returnResult.add(rs.getString("PurchaseDate"));
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return returnResult;
     }
 
-    public String getLastPurchaseFromStore(String firstName, String lastName) {
-
-        //TODO FIX THIS
-        return "";
+    public static Purchase getInstance() {
+        return purchase;
     }
 }

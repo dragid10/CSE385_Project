@@ -2,7 +2,6 @@ import com.sun.istack.internal.NotNull;
 import com.sun.istack.internal.Nullable;
 
 import java.sql.*;
-import java.util.ArrayList;
 
 /**
  * Name: Alex Oladele
@@ -10,9 +9,6 @@ import java.util.ArrayList;
  * Assignment: CSE385_Project
  */
 public class Player extends EmptyString {
-    private int playerID;
-    private String firstName, lastName, emailAddress, password, rewardsCardLevel;
-    private boolean isDeleted;
     private static Player player = new Player();
     private String sqlQuery;
     private CallableStatement callableStatement;
@@ -103,7 +99,7 @@ public class Player extends EmptyString {
                 callableStatement.execute();
                 System.out.println("Player Updated Successfully!");
             } else {
-                System.out.println("The PlayerID provided does not exist\nDatabase Was not altered");
+                System.out.println("The PlayerID provided does not exist - Database Was not altered");
             }
         } catch (SQLException e) {
             System.out.println("Player not updated");
@@ -137,7 +133,7 @@ public class Player extends EmptyString {
                 callableStatement.execute();
                 System.out.println("Player Successfully Deleted!");
             } else {
-                System.out.println("The PlayerID provided does not exist\nDatabase Was not altered");
+                System.out.println("The PlayerID provided does not exist - Database Was not altered");
             }
         } catch (SQLException e) {
             System.out.println("There was a problem Deleting the Player from the database");
@@ -145,29 +141,36 @@ public class Player extends EmptyString {
         }
     }
 
-    // TODO Come back to this and implement
-    public double getCustomerWinRatio(int playerID) {
-        double winRatio = 0.0;
+    public float getSpending(@NotNull int playerID) {
+        float queryResult = 0;
+        boolean isDeleted = false;
 
-        return winRatio;
-    }
-
-    public ArrayList<String> getSpending(@NotNull int playerID) {
-        ArrayList<String> returnList = new ArrayList<>();
-        sqlQuery = "{call spGetCustomerSpendingByID (?)}";
         try {
-            callableStatement = SQLServer.conn.prepareCall(sqlQuery);
-            callableStatement.setInt("playerID",playerID);
-            callableStatement.execute();
+            ResultSet rs;
+            statement = SQLServer.conn.createStatement();
 
-            returnList.add(callableStatement.getString(1));
-            returnList.add(callableStatement.getFloat(2) + "");
+//            Executes the getCustomerSpending SP
+            sqlQuery = String.format("SELECT * FROM tblPlayers WHERE PlayerID = %d", playerID);
+            rs = statement.executeQuery(sqlQuery);
+            while (rs.next()) {
+                isDeleted = rs.getBoolean("Deleted");
+            }
 
+//            If player is soft deleted, return -1
+            if (isDeleted) {
+                System.out.println("The PlayerID provided does not exist - No Data Fetched");
+                return -1;
+            } else {
+                sqlQuery = String.format("{call spGetCustomerSpendingByID (%d)}", playerID);
+                rs = statement.executeQuery(sqlQuery);
+                while (rs.next()) {
+                    queryResult = rs.getFloat("TotalSpent");
+                }
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        //TODO FIX THIS
-        return returnList;
+        return queryResult;
     }
 
     public static Player getInstance() {
