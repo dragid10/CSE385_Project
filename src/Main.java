@@ -51,5 +51,29 @@ public class Main {
 //        game.updateGame(30, 8, 50, "10/09/2015");
 //        game.deleteGame(31);
 
+//       ======= PLAYERGAME =======
+        PlayerGame playerGame = PlayerGame.getInstance();
+//        playerGame.addPlayerGame(9, 31);
+//        playerGame.updatePlayerGame(21, 11, 21);
+//        playerGame.deletePlayerGame(23);
+
+//     ======= PLAYERPURCHASE =======
+        PlayerPurchase playerPurchase = PlayerPurchase.getInstance();
+//        playerPurchase.addPlayerPurchase(9, 31);
+//        playerPurchase.updatePlayerPurchase(21, 11, 21);
+//        playerPurchase.deletePlayerPurchase(23);
     }
+
+    //     ======= PURCHASEITEM =======
+    PurchaseItem purchaseItem = PurchaseItem.getInstance();
+//        purchaseItem.addPurchaseItem(9, 31);
+//        purchaseItem.updatePurchaseItem(21, 11, 21);
+//        purchaseItem.deletePurchaseItem(23);
+
+    //     ======= SLOTGAME =======
+    SlotGame slotGame = SlotGame.getInstance();
+//        slotGame.addSlotGame(9, 31);
+//        slotGame.updateSlotGame(21, 11, 21);
+//        slotGame.deleteSlotGame(23);
 }
+

@@ -12,9 +12,6 @@ import java.sql.Statement;
  * Assignment: CSE385_Project
  */
 public class Game extends EmptyString {
-    private int gameID;
-    private float bet, win, profit;
-    private String gamePlayed;
     static private Game game = new Game();
     private String sqlQuery;
     private CallableStatement callableStatement;

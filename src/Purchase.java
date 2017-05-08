@@ -9,9 +9,6 @@ import java.util.ArrayList;
  * Assignment: CSE385_Project
  */
 public class Purchase {
-    private int purchaseID;
-    private String purchaseDate;
-    private boolean isFree, isDeleted;
     private static Purchase purchase = new Purchase();
     private String sqlQuery;
     private CallableStatement callableStatement;

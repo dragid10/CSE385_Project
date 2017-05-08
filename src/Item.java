@@ -12,10 +12,6 @@ import java.sql.Statement;
  * Assignment: CSE385_Project
  */
 public class Item extends EmptyString {
-    private int itemID;
-    private String itemName;
-    private float itemPrice;
-    private boolean isDeleted;
     static private Item item = new Item();
     private String sqlQuery;
     private CallableStatement callableStatement;
