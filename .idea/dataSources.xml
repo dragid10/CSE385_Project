@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
+    <data-source source="LOCAL" name="Casino DB" uuid="f276d906-a9f6-4485-be40-7d0c45996678">
+      <driver-ref>sqlserver.ms</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>com.microsoft.sqlserver.jdbc.SQLServerDriver</jdbc-driver>
+      <jdbc-url>jdbc:sqlserver://mydatabase.ctidpczh1sap.us-east-2.rds.amazonaws.com:1433;databaseName=Casino</jdbc-url>
+    </data-source>
+  </component>
+</project>
